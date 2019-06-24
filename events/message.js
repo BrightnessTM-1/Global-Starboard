@@ -13,7 +13,7 @@ module.exports = (client, message, Discord) => {
         let commandText = message.content.split(" ")[0].toLowerCase() //Input command
         if (commandText === configuration.config.prefix + commandName) { //Check if command matches
             let args = message.content.split(" ").splice(1);
-            var permission = core.checkPermissions(message.author.id);
+            var permission = core.checkPermissions(message.author.id, client);
 
             if (permission > command.controls.permission) return message.react("🚫");
             if (command.controls.enabled === false) return message.reply("This command has been disabled globally.");
