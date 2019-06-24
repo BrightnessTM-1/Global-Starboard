@@ -1,5 +1,29 @@
-require("coreFunctions.js");
+const core = require("../coreFunctions.js");
+const fs = require('fs');
+const Enmap = require('enmap');
+const request = require('request');
+const configuration = require('../config.json');
 module.exports = (client, message, Discord) => {
+  //Save as known to bot
+    if (!client.messages) {
+        core.initEnmap("messages", client)
+    }
+
+  client.messages.ensure(`${message.id}`, {
+    messageid: message.id,
+    channelid: message.channel.id,
+    stars: 0,
+    starsInfo: {
+        global: [],
+        server: [],
+        message: []
+    },
+    reported: false,
+    hidden: false,
+    serverBoard: false,
+    globalBoard: false
+  });
+
 
   //Check if message is a command
   fs.readdir("./commands/", (err, files) => {
@@ -11,7 +35,7 @@ module.exports = (client, message, Discord) => {
         let commandText = message.content.split(" ")[0].toLowerCase() //Input command
         if (commandText === configuration.config.prefix + commandName) { //Check if command matches
             let args = message.content.split(" ").splice(1);
-            var memberPermission = checkPermissions(message.author.id);
+            var permission = core.checkPermissions(message.author.id, client);
 
             if (permission > command.controls.permission) return message.react("🚫");
             if (command.controls.enabled === false) return message.reply("This command has been disabled globally.");
