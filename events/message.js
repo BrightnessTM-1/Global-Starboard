@@ -1,4 +1,6 @@
-require("coreFunctions.js");
+const core = require("../coreFunctions.js");
+const fs = require('fs');
+const configuration = require('../config.json');
 module.exports = (client, message, Discord) => {
 
   //Check if message is a command
@@ -11,7 +13,7 @@ module.exports = (client, message, Discord) => {
         let commandText = message.content.split(" ")[0].toLowerCase() //Input command
         if (commandText === configuration.config.prefix + commandName) { //Check if command matches
             let args = message.content.split(" ").splice(1);
-            var memberPermission = checkPermissions(message.author.id);
+            var permission = core.checkPermissions(message.author.id);
 
             if (permission > command.controls.permission) return message.react("🚫");
             if (command.controls.enabled === false) return message.reply("This command has been disabled globally.");
