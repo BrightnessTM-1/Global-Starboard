@@ -1,0 +1,16 @@
+{
+    "name": "global-starboard",
+    "description": "",
+    "author": "Brightness™#2238",
+    "main": "node bot.js",
+    "scripts": {
+      "start": "node bot.js"
+    },
+    "engines": {
+      "node": "10.16.0"
+    },
+    "dependencies": {
+      "discord.js": "11.5.1",
+      "ms": "2.1.2"
+    }
+  }
