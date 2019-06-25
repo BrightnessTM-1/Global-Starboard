@@ -1,6 +1,5 @@
 const configuration = require('../config.json');
-module.exports = (Discord, client, messageReaction, user) => {
-    messageReaction.message.guild.fetchMembers()
+module.exports = (client, Discord, messageReaction, user) => {
     if (messageReaction.emoji.name === "⭐") {
         //Star reaction
         //Check if it's in the global starboard
@@ -13,12 +12,10 @@ module.exports = (Discord, client, messageReaction, user) => {
             var reactedOnMessage = client.messages.get(messageReaction.message.id, "starsInfo.message")
             var reactedOnGlobal = client.messages.get(messageReaction.message.id, "starsInfo.global")
             var reactedOnServer = client.messages.get(messageReaction.message.id, "starsInfo.server")
-            console.log(reactedOnMessage)
-            console.log(reactedOnGlobal)
-            console.log(reactedOnServer)
-            return;
-            if (messageReaction.count > 1) {//Will be 6 later
+            reactedOnMessage.push(user.id)
+            if (messageReaction.count > 0) {//Will be 6 later
                 let embed = new Discord.RichEmbed()
+                console.log("starred")
             }
         }
     }
