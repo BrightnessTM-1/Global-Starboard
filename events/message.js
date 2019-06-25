@@ -3,7 +3,7 @@ const fs = require('fs');
 const Enmap = require('enmap');
 const request = require('request');
 const configuration = require('../config.json');
-module.exports = (client, message, Discord) => {
+module.exports = (client, Discord, message) => {
   //Save as known to bot
     if (!client.messages) {
         core.initEnmap("messages", client)
