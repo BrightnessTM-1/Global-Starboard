@@ -58,6 +58,26 @@ module.exports = (client, Discord, messageReaction, user) => {
                   core.botLog("`[ERROR]` Failed to fetch message on server Starboard")
                 })
           }
+              if (client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'starboard') && starCount >= client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'threshold')) {
+                  client.messages.set(messageReaction.message.id, true, "serverBoard");
+                
+                let embed = new Discord.RichEmbed()
+                embed.setTitle(fetched.author.tag)
+                embed.setThumbnail(fetched.author.displayAvatarURL)
+                embed.setColor("#FFAD00")
+                embed.setTimestamp(fetched.createdTimestamp)
+                embed.setDescription(fetched.content)
+                embed.addField("Jump to Message", "[Jump to message](https://discordapp.com/channels/" + fetched.guild.id + "/" + fetched.channel.id + "/" + fetched.id + ")")
+                if (fetched.attachments.first()) {
+                  embed.setImage(fetched.attachments.first().url)
+                }
+                client.channels.get(client.servers.get(fetched.guild.id, 'starboard')).send(":star: **" + starCount.toString() + "** | <#" + fetched.channel.id + ">", embed).then(sent => {
+                  client.messages.set(fetched.id, sent.id, "serverBoardMessage");
+                  sent.react("⭐")
+                }).catch(e => {
+                  core.botLog("`[ERROR]` Failed to post message to server Starboard")
+                })
+                  }
             })
           
           
@@ -140,7 +160,7 @@ module.exports = (client, Discord, messageReaction, user) => {
             var starCount = reactionsNoDupe.length;
             client.messages.set(messageReaction.message.id, starCount, "stars");
             client.messages.set(messageReaction.message.id, reactedOnMessage, "starsInfo.message");
-            if (starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold')) {
+            if (client.servers.get(messageReaction.message.guild.id, 'threshold') && starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold')) {
               if (!client.messages.get(messageReaction.message.id, "serverBoardMessage")) {
                 client.messages.set(messageReaction.message.id, true, "serverBoard");
                 
