@@ -1,6 +1,12 @@
 const configuration = require('../config.json');
 const core = require('../coreFunctions.js')
 module.exports = (client, Discord, messageReaction, user) => {
+    if (!client.messages) {
+        core.initEnmap("messages", client)
+    }
+  if (!client.servers) {
+        core.initEnmap("servers", client)
+    }
     if (messageReaction.emoji.name === "⭐") {
         //Star reaction
         //Check if it's in the global starboard
@@ -34,6 +40,9 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp()
                 embed.setDescription(fetched.content)
+                if (fetched.attachments.first()) {
+                  embed.setImage(fetched.attachments.first().url)
+                }
                 client.channels.get(configuration.config.channels.global_starboard).fetchMessage(client.messages.get(fetched.id, "globalBoardMessage")).then(fetched_gs => {
                   fetched_gs.edit(":star: **" + starCount.toString() + "** | <#" + fetched.channel.id + ">", embed)
                 }).catch(e => {
@@ -70,6 +79,9 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp()
                 embed.setDescription(messageReaction.message.content)
+              if (messageReaction.message.attachments.first()) {
+                  embed.setImage(messageReaction.message.attachments.first().url)
+                }
                 client.channels.get(configuration.config.channels.global_starboard).fetchMessage(client.messages.get(messageReaction.message.id, "globalBoardMessage")).then(fetched => {
                   fetched.edit(":star: **" + starCount.toString() + "** | <#" + messageReaction.message.channel.id + ">", embed)
                 }).catch(e => {
