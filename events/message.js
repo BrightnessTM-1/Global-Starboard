@@ -8,6 +8,7 @@ module.exports = (client, Discord, message) => {
     if (!client.messages) {
         core.initEnmap("messages", client)
     }
+  if (message.channel.type !== "text") return;
 
   client.messages.ensure(`${message.id}`, {
     messageid: message.id,
