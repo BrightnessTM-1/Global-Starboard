@@ -8,6 +8,7 @@ module.exports = (client, Discord, messageReaction, user) => {
         core.initEnmap("servers", client)
     }
     if (messageReaction.emoji.name === "⭐") {
+      if (messageReaction.message.channel.type !== "text" || messageReaction.message.channel.nsfw === true) return;
         //Star reaction
         //Check if it's in the global starboard
         if (messageReaction.message.channel.id === configuration.config.channels.global_starboard) {
