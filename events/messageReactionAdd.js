@@ -31,6 +31,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(fetched.createTimestamp)
                 embed.setDescription(fetched.content)
+                embed.setFooter("Message ID: " + fetched.id)
               if (fetched.attachments.first()) {
                   embed.setImage(fetched.attachments.first().url)
                 }
@@ -48,6 +49,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(fetched.createdTimestamp)
                 embed.setDescription(fetched.content)
+                embed.setFooter("Message ID: " + fetched.id)
                 embed.addField("Jump to Message", "[Jump to message](https://discordapp.com/channels/" + fetched.guild.id + "/" + fetched.channel.id + "/" + fetched.id + ")")
                 if (fetched.attachments.first()) {
                   embed.setImage(fetched.attachments.first().url)
@@ -58,7 +60,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                   core.botLog("`[ERROR]` Failed to fetch message on server Starboard")
                 })
           }
-              if (client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'starboard') && starCount >= client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'threshold')) {
+            else if (client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'starboard') && starCount >= client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'threshold')) {
                   client.messages.set(messageReaction.message.id, true, "serverBoard");
                 
                 let embed = new Discord.RichEmbed()
@@ -67,6 +69,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(fetched.createdTimestamp)
                 embed.setDescription(fetched.content)
+                embed.setFooter("Message ID: " + fetched.id)
                 embed.addField("Jump to Message", "[Jump to message](https://discordapp.com/channels/" + fetched.guild.id + "/" + fetched.channel.id + "/" + fetched.id + ")")
                 if (fetched.attachments.first()) {
                   embed.setImage(fetched.attachments.first().url)
@@ -82,7 +85,7 @@ module.exports = (client, Discord, messageReaction, user) => {
           
           
         
-        } else if (messageReaction.message.channel.id === client.servers.get(messageReaction.message.guild.id, 'starboard')) {
+        } else if (client.servers.get(messageReaction.message.guild.id) && messageReaction.message.channel.id === client.servers.get(messageReaction.message.guild.id, 'starboard')) {
             //Server starboard
             if (user.id === client.user.id) return; //ignore self
             var foundMsg = client.messages.find(msg => msg.serverBoardMessage == messageReaction.message.id).messageid
@@ -104,6 +107,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(fetched.createdTimestamp)
                 embed.setDescription(fetched.content)
+              embed.setFooter("Message ID: " + fetched.id)
                 embed.addField("Jump to Message", "[Jump to message](https://discordapp.com/channels/" + fetched.guild.id + "/" + fetched.channel.id + "/" + fetched.id + ")")
                 if (fetched.attachments.first()) {
                   embed.setImage(fetched.attachments.first().url)
@@ -123,6 +127,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(fetched.createdTimestamp)
                 embed.setDescription(fetched.content)
+            embed.setFooter("Message ID: " + fetched.id)
                 if (fetched.attachments.first()) {
                   embed.setImage(fetched.attachments.first().url)
                 }
@@ -138,6 +143,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(fetched.createdTimestamp)
                 embed.setDescription(fetched.content)
+            embed.setFooter("Message ID: " + fetched.id)
                 if (fetched.attachments.first()) {
                   embed.setImage(fetched.attachments.first().url)
                 }
@@ -160,7 +166,7 @@ module.exports = (client, Discord, messageReaction, user) => {
             var starCount = reactionsNoDupe.length;
             client.messages.set(messageReaction.message.id, starCount, "stars");
             client.messages.set(messageReaction.message.id, reactedOnMessage, "starsInfo.message");
-            if (client.servers.get(messageReaction.message.guild.id, 'threshold') && starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold')) {
+            if (client.servers.get(messageReaction.message.guild.id) && client.servers.get(messageReaction.message.guild.id, 'threshold') && starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold')) {
               if (!client.messages.get(messageReaction.message.id, "serverBoardMessage")) {
                 client.messages.set(messageReaction.message.id, true, "serverBoard");
                 
@@ -170,6 +176,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(messageReaction.message.createdTimestamp)
                 embed.setDescription(messageReaction.message.content)
+                embed.setFooter("Message ID: " + messageReaction.message.id)
                 embed.addField("Jump to Message", "[Jump to message](https://discordapp.com/channels/" + messageReaction.message.guild.id + "/" + messageReaction.message.channel.id + "/" + messageReaction.message.id + ")")
                 if (messageReaction.message.attachments.first()) {
                   embed.setImage(messageReaction.message.attachments.first().url)
@@ -187,6 +194,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(messageReaction.message.createdTimestamp)
                 embed.setDescription(messageReaction.message.content)
+                embed.setFooter("Message ID: " + messageReaction.message.id)
                 embed.addField("Jump to Message", "[Jump to message](https://discordapp.com/channels/" + messageReaction.message.guild.id + "/" + messageReaction.message.channel.id + "/" + messageReaction.message.id + ")")
                 if (messageReaction.message.attachments.first()) {
                   embed.setImage(messageReaction.message.attachments.first().url)
@@ -208,6 +216,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(messageReaction.message.createdTimestamp)
                 embed.setDescription(messageReaction.message.content)
+                embed.setFooter("Message ID: " + messageReaction.message.id)
                 if (messageReaction.message.attachments.first()) {
                   embed.setImage(messageReaction.message.attachments.first().url)
                 }
@@ -224,6 +233,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 embed.setColor("#FFAD00")
                 embed.setTimestamp(messageReaction.message.createdTimestamp)
                 embed.setDescription(messageReaction.message.content)
+                embed.setFooter("Message ID: " + messageReaction.message.id)
                 if (messageReaction.message.attachments.first()) {
                   embed.setImage(messageReaction.message.attachments.first().url)
                 }
