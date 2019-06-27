@@ -16,5 +16,7 @@ module.exports = {
           embed.addField("Global Admin Commands", "`*config` - Configures bot status\n`*eval` - Runs code\n`*reboot` - Reboots the bot")
         }
         embed.addField("Misc Commands", "`*server` - Generates an invite link to the official Global Starboard Server\n`*ping` - Checks bot response time\n`*help` - Displays this message")
+      embed.setColor("#7289da")  
+      message.channel.send(embed)
     }
 }
