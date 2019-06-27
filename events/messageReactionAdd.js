@@ -61,8 +61,8 @@ module.exports = (client, Discord, messageReaction, user) => {
                   core.botLog("`[ERROR]` Failed to fetch message on server Starboard")
                 })
           }
-            else if (client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'starboard') && starCount >= client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'threshold')) {
-                  client.messages.set(messageReaction.message.id, true, "serverBoard");
+            else if (client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'starboard') && starCount >= client.servers.get(client.channels.get(client.messages.get(foundMsg, 'channelid')).guild.id, 'threshold') && !client.messages.get(foundMsg, 'serverHidden')) {  
+              client.messages.set(messageReaction.message.id, true, "serverBoard");
                 
                 let embed = new Discord.RichEmbed()
                 embed.setTitle(fetched.author.tag)
@@ -137,7 +137,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 }).catch(e => {
                   core.botLog("`[ERROR]` Failed to fetch message on Global Starboard")
                 })
-          } else if (starCount >= configuration.config.global_threshold) {
+          } else if (starCount >= configuration.config.global_threshold && !client.messages.get(foundMsg, 'hidden')) {
              let embed = new Discord.RichEmbed()
                 embed.setTitle(fetched.author.tag + " in " + fetched.guild.name)
                 embed.setThumbnail(fetched.author.displayAvatarURL)
@@ -168,7 +168,7 @@ module.exports = (client, Discord, messageReaction, user) => {
             client.messages.set(messageReaction.message.id, starCount, "stars");
             client.messages.set(messageReaction.message.id, reactedOnMessage, "starsInfo.message");
             if (client.servers.get(messageReaction.message.guild.id) && client.servers.get(messageReaction.message.guild.id, 'threshold') && starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold')) {
-              if (!client.messages.get(messageReaction.message.id, "serverBoardMessage")) {
+              if (!client.messages.get(messageReaction.message.id, "serverBoardMessage") && !client.messages.get(messageReaction.message.id, 'serverHidden')) {
                 client.messages.set(messageReaction.message.id, true, "serverBoard");
                 
                 let embed = new Discord.RichEmbed()
@@ -188,7 +188,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 }).catch(e => {
                   core.botLog("`[ERROR]` Failed to post message to server Starboard")
                 })
-              } else {
+              } else if (!client.messages.get(messageReaction.message.id, 'serverHidden')) {
                 let embed = new Discord.RichEmbed()
                 embed.setTitle(messageReaction.message.author.tag)
                 embed.setThumbnail(messageReaction.message.author.displayAvatarURL)
@@ -208,7 +208,7 @@ module.exports = (client, Discord, messageReaction, user) => {
               }
             }
             if (starCount >= configuration.config.global_threshold) {
-              if (!client.messages.get(messageReaction.message.id, "globalBoardMessage")) {
+              if (!client.messages.get(messageReaction.message.id, "globalBoardMessage") && !client.messages.get(messageReaction.message.id, 'hidden')) {
                 client.messages.set(messageReaction.message.id, true, "globalBoard");
                 
                 let embed = new Discord.RichEmbed()
@@ -227,7 +227,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 }).catch(e => {
                   core.botLog("`[ERROR]` Failed to post message to Global Starboard")
                 })
-              } else {
+              } else if (!client.messages.get(messageReaction.message.id, 'hidden')) {
                 let embed = new Discord.RichEmbed()
                 embed.setTitle(messageReaction.message.author.tag + " in " + messageReaction.message.guild.name)
                 embed.setThumbnail(messageReaction.message.author.displayAvatarURL)
