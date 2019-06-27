@@ -12,8 +12,16 @@ module.exports = (client, Discord) => {
     //Fetch messages
     var messages = client.messages.map(x => x.messageid);
     messages.forEach(msg => {
-      client.channels.get(client.messages.get(msg, "channelid")).fetchMessage(client.messages.get(msg, "messageid")).catch(e => {
+      if (!client.channels.get(client.messages.get(msg, "channelid"))) {
+        if (client.messages.get(msg, "globalBoard")) { //Remove from global starboard if on global starboard
+          client.channels.get(configuration.config.channels.global_starboard).fetchMessage(client.messages.get(msg, "globalBoardMessage")).then(fetched => fetched.delete())
+        }
+        client.messages.delete(msg)//Remove from database
+        return;
+      }
+      client.channels.get(client.messages.get(msg, "channelid")).fetchMessage(client.messages.get(msg, "messageid")).then(f => console.log("Fetched " + f.id)).catch(e => {
         //IF MESSAGE HAS BEEN DELETED
+        
         if (client.messages.get(msg, "globalBoard")) { //Remove from global starboard if on global starboard
           client.channels.get(configuration.config.channels.global_starboard).fetchMessage(client.messages.get(msg, "globalBoardMessage")).then(fetched => fetched.delete())
         }
