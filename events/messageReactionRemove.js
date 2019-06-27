@@ -166,7 +166,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                   client.messages.delete(messageReaction.message.id, "serverBoardMessage")
               })
             }
-            if (client.servers.get(messageReaction.message.guild.id) && client.servers.get(messageReaction.message.guild.id, 'threshold') && starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold')) {
+            if (client.servers.get(messageReaction.message.guild.id) && client.servers.get(messageReaction.message.guild.id, 'threshold') && starCount >= client.servers.get(messageReaction.message.guild.id, 'threshold') && !client.messages.get(messageReaction.message.id, 'serverHidden')) {
 
                 let embed = new Discord.RichEmbed()
                 embed.setTitle(messageReaction.message.author.tag)
@@ -185,7 +185,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                   core.botLog("`[ERROR]` Failed to fetch message on server Starboard")
                 })
             }
-          if (starCount < configuration.config.global_threshold) {
+          if (starCount < configuration.config.global_threshold && client.messages.get(messageReaction.message.id, 'globalBoard')) {
             client.channels.get(configuration.config.channels.global_starboard).fetchMessage(client.messages.get(messageReaction.message.id, "globalBoardMessage")).then(fetched => {
                   fetched.delete()
                   client.messages.set(messageReaction.message.id, false, "globalBoard")
@@ -193,7 +193,7 @@ module.exports = (client, Discord, messageReaction, user) => {
               })
           }
             if (starCount >= configuration.config.global_threshold) {
-              if (!client.messages.get(messageReaction.message.id, "globalBoardMessage")) {
+              if (!client.messages.get(messageReaction.message.id, "globalBoardMessage") && !client.messages.get(messageReaction.message.id, 'hidden')) {
                 client.messages.set(messageReaction.message.id, true, "globalBoard");
                 
                 let embed = new Discord.RichEmbed()
@@ -212,7 +212,7 @@ module.exports = (client, Discord, messageReaction, user) => {
                 }).catch(e => {
                   core.botLog("`[ERROR]` Failed to post message to Global Starboard")
                 })
-              } else {
+              } else if (!client.messages.get(messageReaction.message.id, 'hidden')) {
                 let embed = new Discord.RichEmbed()
                 embed.setTitle(messageReaction.message.author.tag + " in " + messageReaction.message.guild.name)
                 embed.setThumbnail(messageReaction.message.author.displayAvatarURL)
