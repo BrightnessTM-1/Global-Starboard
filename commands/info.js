@@ -21,18 +21,12 @@ module.exports = {
         embed.addField("Posted by", fetched.author.tag + " (" + fetched.author.id + ")")
           embed.setThumbnail(fetched.author.displayAvatarURL)
         
-        if (client.servers.get(client.channels.get(msg.channelid).guild.id, 'starboard') && client.channels.get(msg.channelid).guild.id !== message.guild.id) {
-          client.channels.get(client.servers.get(client.channels.get(msg.channelid).guild.id, 'starboard')).createInvite({maxAge: 0}, "Info command").then(invite => {
-            embed.addField("From Server", client.channels.get(msg.channelid).guild.name + " (" + client.channels.get(msg.channelid).guild.id + ")\n[Invite Link](https://discord.gg/" + invite.code + ")")
-          }).catch(e => {
-            embed.addField("From Server", client.channels.get(msg.channelid).guild.name + " (" + client.channels.get(msg.channelid).guild.id + ")\nCannot Generate Invite to Server")
-          })
-        } else if (client.channels.get(msg.channelid).guild.id === message.guild.id) {
+        if (client.channels.get(msg.channelid).guild.id === message.guild.id) {
           if (msg.serverBoard) {
             embed.addField("Server Starboard", "[Jump to starboard post](https://discordapp.com/channels/" + message.guild.id + "/" + client.servers.get(message.guild.id, 'starboard') + "/" + msg.serverBoardMessage + ")")
           } else embed.addField("Server Starboard", "This post is not on the server starboard")
         } else {
-          embed.addField("From Server", client.channels.get(msg.channelid).guild.name + " (" + client.channels.get(msg.channelid).guild.id + ")\nCannot Generate Invite to Server")
+          embed.addField("From Server", client.channels.get(msg.channelid).guild.name + " (" + client.channels.get(msg.channelid).guild.id + ")\nUse `*invite " + args[0] + "` to get an invite to this server")
         }
       
         if (msg.globalBoard === true) {
