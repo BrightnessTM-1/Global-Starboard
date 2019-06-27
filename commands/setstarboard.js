@@ -16,7 +16,7 @@ module.exports = {
           client.servers.ensure(`${message.guild.id}`, {
             guildid: message.guild.id
           });
-      if (client.servers.get(message.guild.id, 'starboard')) return message.reply("Unfortunately, the server starboard channel cannot be changed after being set due to the possibility of message references breaking. **If no messages have been starred to the server starboard**, please contact our support team (`*support` command) and they may be able to set your starboard channel to something different.")
+      if (client.servers.get(message.guild.id, 'starboard')) return message.reply("Unfortunately, the server starboard channel cannot be changed after being set due to the possibility of message references breaking. **If no messages have been starred to the server starboard**, please contact our support team (`*server` command) and they may be able to set your starboard channel to something different.")
         if (!message.mentions.channels.first()) {
           if (client.servers.get(message.guild.id, 'starboard')) {
             return message.reply("Please mention a channel (example: #channel) to set it as your server's starboard! Your current starboard channel is <#" + client.servers.get(message.guild.id, 'starboard') + ">.")
