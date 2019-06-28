@@ -16,7 +16,7 @@ module.exports = (client, Discord, messageReaction, user) => {
       var foundMsg = client.messages.find(msg => msg.globalBoardMessage == messageReaction.message.id).messageid
       if (!foundMsg) return;
       client.channels.get(client.messages.get(foundMsg, "channelid")).fetchMessage(client.messages.get(foundMsg, "messageid")).then(fetched => {
-        if (fetched.author.id === user.id) return; // no self star
+        if (fetched.author.id === user.id) return messageReaction.remove(user.id); // no self star
         var reactedOnMessage = client.messages.get(foundMsg, "starsInfo.message")
         var reactedOnGlobal = client.messages.get(foundMsg, "starsInfo.global")
         var reactedOnServer = client.messages.get(foundMsg, "starsInfo.server")
@@ -92,7 +92,7 @@ module.exports = (client, Discord, messageReaction, user) => {
       var foundMsg = client.messages.find(msg => msg.serverBoardMessage == messageReaction.message.id).messageid
       if (!foundMsg) return;
       client.channels.get(client.messages.get(foundMsg, "channelid")).fetchMessage(client.messages.get(foundMsg, "messageid")).then(fetched => {
-        if (fetched.author.id === user.id) return; //no self star
+        if (fetched.author.id === user.id) return messageReaction.remove(user.id); //no self star
         var reactedOnMessage = client.messages.get(foundMsg, "starsInfo.message")
         var reactedOnGlobal = client.messages.get(foundMsg, "starsInfo.global")
         var reactedOnServer = client.messages.get(foundMsg, "starsInfo.server")
@@ -161,7 +161,7 @@ module.exports = (client, Discord, messageReaction, user) => {
     } else {
       //Not on a starboard
 
-      if (messageReaction.message.author.id === user.id) return; //no self star
+      if (messageReaction.message.author.id === user.id) return messageReaction.remove(user.id); //no self star
 
       var reactedOnMessage = client.messages.get(messageReaction.message.id, "starsInfo.message")
       var reactedOnGlobal = client.messages.get(messageReaction.message.id, "starsInfo.global")
