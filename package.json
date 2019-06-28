@@ -1,6 +1,6 @@
 {
   "name": "global-starboard",
-  "description": "",
+  "description": "A bot that brings together all of the amazing star-worthy posts from around Discord",
   "author": "Brightness™#2238",
   "main": "node bot.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "discord.js": "11.5.1",
     "enmap": "^5.0.0",
     "ms": "2.1.2",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "better-sqlite3": "^5.4.0"
   }
 }
