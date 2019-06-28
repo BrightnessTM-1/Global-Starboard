@@ -4,9 +4,9 @@ const Enmap = require('enmap');
 const request = require('request');
 const configuration = require('../config.json');
 module.exports = (client, Discord, message) => {
-        if (!client.servers) {
-                core.initEnmap("servers", client)
-            }
+  if (!client.servers) {
+    core.initEnmap("servers", client)
+  }
   if (message.channel.id === configuration.config.channels.global_starboard) {
     var foundMsg = client.messages.find(msg => msg.globalBoardMessage == message.id)
     if (!foundMsg) return;
@@ -18,8 +18,8 @@ module.exports = (client, Discord, message) => {
     if (!foundMsg) return;
     client.messages.set(foundMsg.messageid, false, 'serverBoard')
     client.messages.set(foundMsg.messageid, true, 'serverHidden')
-    client.messages.delete(foundMsg.messageid, 'serverBoardMessage')  
+    client.messages.delete(foundMsg.messageid, 'serverBoardMessage')
   }
   client.messages.delete(message.id)
-  
+
 }
